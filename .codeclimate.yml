@@ -1,0 +1,8 @@
+plugins:
+  eslint:
+    enabled: true
+    channel: "eslint-7"
+  editorconfig:
+    enabled: true
+  fixme:
+    enabled: true

@@ -1,0 +1,51 @@
+{
+  "name": "ipfs-search-push",
+  "version": "0.1.0",
+  "description": "Implement the IPFS pin service API to automatically push IPFS updates onto the ipfs-search.com crawler queue.",
+  "keywords": [
+    "ipfs",
+    "ipns"
+  ],
+  "author": "Frido Emans <frido@emans.co>",
+  "homepage": "https://github.com/ipfs-search/nyats/tree/main/packages/server#readme",
+  "license": "AGPL-3.0-or-later",
+  "main": "src/app.ts",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ipfs-search/ipfs-search-push.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "mocha",
+    "test:watch": "mocha --watch",
+    "test:cover": "c8 --src src --all mocha"
+  },
+  "bugs": {},
+  "devDependencies": {
+    "@types/chai": "^4.3.3",
+    "@types/debug": "^4.1.7",
+    "@types/express": "^4.17.14",
+    "@types/jest": "^28.1.7",
+    "@types/sinon": "^10.0.13",
+    "@types/sinon-chai": "^3.2.8",
+    "@types/supertest": "^2.0.12",
+    "@types/url-join": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "api-contract-validator": "^2.2.8",
+    "babel-eslint": "^10.1.0",
+    "c8": "^7.12.0",
+    "esmock": "^1.9.6",
+    "mocha-suppress-logs": "^0.3.1",
+    "sinon": "^14.0.0",
+    "supertest": "^6.2.4"
+  },
+  "dependencies": {
+    "debug": "^4.3.4",
+    "express": "^4.18.1",
+    "express-healthcheck": "^0.1.0"
+  },
+  "files": [
+    "src"
+  ]
+}
