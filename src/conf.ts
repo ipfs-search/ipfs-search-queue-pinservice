@@ -1,8 +1,10 @@
 import os from "os";
 
-export const PROCESSES : number = parseInt(process.env.PROCESSES || '') || os.cpus().length;
+export const PROCESSES = parseInt(process.env.NYATS_PROCESSES) || os.cpus().length;
 export const HOST = process.env.NYATS_SERVER_HOST || "localhost";
-export const PORT = process.env.NYATS_SERVER_PORT || "9614";
+export const PORT = parseInt(process.env.NYATS_SERVER_PORT || "1337");
+export const IPNS_UPDATE_INTERVAL = parseInt(process.env.IPNS_UPDATE_INTERVAL || "60000");
 export const IPFS_API = process.env.IPFS_API || "http://localhost:5001";
-export const IPFS_TIMEOUT = process.env.IPFS_TIMEOUT || 120 * 1000;
-export const IPFS_GATEWAY = process.env.IPFS_GATEWAY || "https://dweb.link";
+export const IPFS_TIMEOUT = parseInt(process.env.IPFS_TIMEOUT || "120000");
+export const PUBLIC_IPFS_GATEWAY = process.env.PUBLIC_IPFS_GATEWAY || "https://dweb.link";
+export const PRIVATE_IPFS_GATEWAY = process.env.PRIVATE_IPFS_GATEWAY || "http://127.0.0.1:8080";
