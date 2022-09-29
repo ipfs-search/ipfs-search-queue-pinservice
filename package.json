@@ -21,7 +21,7 @@
     "test": "mocha",
     "test:watch": "mocha --watch",
     "test:cover": "c8 --src src --all mocha",
-    "prettier": "prettier --write .",
+    "prettier": "prettier --write ."
   },
   "bugs": {},
   "devDependencies": {

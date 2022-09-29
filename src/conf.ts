@@ -2,7 +2,7 @@ import os from "os";
 
 export const PROCESSES = parseInt(process.env.PROCESSES) || os.cpus().length;
 export const HOST = process.env.SERVER_HOST || "localhost";
-export const PORT = parseInt(process.env.NYATS_SERVER_PORT || "1337");
+export const PORT = parseInt(process.env.SERVER_PORT || "7070");
 export const IPNS_UPDATE_INTERVAL = parseInt(process.env.IPNS_UPDATE_INTERVAL || "60000");
 export const IPFS_API = process.env.IPFS_API || "http://localhost:5001";
 export const IPFS_TIMEOUT = parseInt(process.env.IPFS_TIMEOUT || "120000");
