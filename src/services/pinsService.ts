@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import makeDebugger from "debug";
 import queueService from "./queueService.js";
 
@@ -19,14 +20,14 @@ interface IGetPinsResponse {
   results: IPinResponse[];
 }
 
-export function getPins(req, res) {
-  debug(req.body);
-  res.status(202).send({
-    message: "This is the mockup controller for getPins",
-  } as IGetPinsResponse);
+export function getPins(req: Request, res: Response) {
+  res.status(202).send(<IGetPinsResponse>{
+    count: 0,
+    results: [],
+  });
 }
 
-export function addPin({ body }: { body: IPin }, res) {
+export function addPin({ body }: Request, res: Response) {
   queueService.sendToQueue(body.cid);
   res
     .status(202)
