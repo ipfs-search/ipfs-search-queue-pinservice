@@ -8,8 +8,8 @@ info:
     name: IPFS
     url: https://github.com/ipfs/pinning-services-api-spec
   description: "
-  
-  
+
+
 ## About this spec
 
 The IPFS Pinning Service API is intended to be an implementation-agnostic API&#x3a;
@@ -275,7 +275,7 @@ Pin objects can be listed by executing `GET /pins` with optional parameters:
 "
 
 servers:
-  - url: https://pinning-service.example.com
+  - url: /
 
 tags:
   - name: pins
@@ -510,7 +510,7 @@ components:
       description: Status a pin object can have at a pinning service
       type: string
       enum:
-        - queued     # pinning operation is waiting in the queue; additional info can be returned in info[status_details]      
+        - queued     # pinning operation is waiting in the queue; additional info can be returned in info[status_details]
         - pinning    # pinning in progress; additional info can be returned in info[status_details]
         - pinned     # pinned successfully
         - failed     # pinning service was unable to finish pinning operation; additional info can be found in info[status_details]
