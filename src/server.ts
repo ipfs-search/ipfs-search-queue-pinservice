@@ -4,9 +4,8 @@ import { initialize } from "@oas-tools/core";
 import makeDebugger from "debug";
 import express from "express";
 import http from "http";
-import amqplib from 'amqplib';
 
-
+import amqHandler from "./services/amqHandler.js";
 import { errorHandler } from "./errorHandler.js";
 
 import { PORT } from "./conf.js";
@@ -33,24 +32,9 @@ const config = {
 }
 
 
-const amqtest = async () => {
-  const queue = 'hashes';
-  const conn = await amqplib.connect('amqp://localhost');
-
-  const ch2 = await conn.createChannel();
-
-  const options = {
-    deliveryMode: 'persistent',
-    mandatory: true,
-    contentType: "application/json",
-  }
-  const payload = {"Protocol":1,"ID":"QmScsxzCV1bJnNokCA8jHnU2X8uek37BxbrBUEdUFridOH","Source":5}
-
-  ch2.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), options);
-  ch2.close()
-}
-
 export const deploy = () => {
+  amqHandler.initialize({})
+
   const app = Express()
   app.use(express.json({limit: '50mb'}));
 
@@ -71,6 +55,7 @@ export const deploy = () => {
 };
 
 export const undeploy = () => {
+  amqHandler.close()
   process.exit();
 };
 

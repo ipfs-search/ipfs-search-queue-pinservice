@@ -1,4 +1,5 @@
 import makeDebugger from "debug";
+import queueService from "./queueService.js";
 
 const debug = makeDebugger("ipfs-search-enqueue-pinservice");
 
@@ -7,10 +8,10 @@ type QueueStatus = 'queued' | 'pinning' | 'pinned' | 'failed'
 interface IPinResponse {
   requestid:	string;
   status:	QueueStatus;
-  created:	String;
+  created:	string;
   pin:	IPin;
   delegates:	[string, ...string[]];
-  info?:	Record<string, any>
+  info?:	Record<string, unknown>
 }
 
 interface IGetPinsResponse {
@@ -22,10 +23,11 @@ export function getPins(req, res) {
   debug (req.body);
   res.status(202).send({
     message: 'This is the mockup controller for getPins'
-  });
+  } as IGetPinsResponse);
 }
 
 export function addPin({ body }: {body:IPin}, res) {
+  queueService.sendToQueue(body.cid)
   res.status(202).setHeader('content-type', 'application/json').send(<IPinResponse>{
     // TODO: proper requestid; maybe CID? Or something from rabbitMQ?
     requestid: '',
