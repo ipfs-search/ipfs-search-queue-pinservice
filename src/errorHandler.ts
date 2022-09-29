@@ -10,7 +10,7 @@ class HttpException extends Error {
   }
 }
 
-export const errorHandler = (err: HttpException, _: Request , res: Response, next: NextFunction) => {
+export const errorHandler = (err: HttpException, _: Request, res: Response, next: NextFunction) => {
   function error(res: Response, code: number, err: string) {
     console.error(`${code}: ${err}`);
     console.trace(err);
@@ -28,5 +28,4 @@ export const errorHandler = (err: HttpException, _: Request , res: Response, nex
     return next(err);
   }
   error(res, 500, err.message);
-}
-
+};

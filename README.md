@@ -4,9 +4,7 @@ Implement the IPFS pin service API to automatically push IPFS updates onto the [
 
 ## Dependencies
 
-
 ## Usage
-
 
 ## Configuration
 

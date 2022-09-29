@@ -39,9 +39,9 @@ function forkWorkers() {
 // async function startWorker() {
 //   const app = deploy();
 
-  // app.listen(PORT, HOST, () => {
-  //   debug(`Started server on http://${HOST}:${PORT}/`)
-  // });
+// app.listen(PORT, HOST, () => {
+//   debug(`Started server on http://${HOST}:${PORT}/`)
+// });
 // }
 
 // if (cluster.isPrimary) {
@@ -53,15 +53,15 @@ function forkWorkers() {
 // }
 
 // quit on ctrl-c when running docker in terminal
-process.on('SIGINT', function onSigint () {
+process.on("SIGINT", function onSigint() {
   debug(`[${new Date().toISOString()}] Got SIGINT (aka ctrl-c in docker). Graceful shutdown`);
   undeploy();
 });
 
 // quit properly on docker stop
-process.on('SIGTERM', function onSigterm () {
+process.on("SIGTERM", function onSigterm() {
   debug(`[${new Date().toISOString()}] Got SIGTERM (docker container stop). Graceful shutdown`);
   undeploy();
 });
 
-deploy()
+deploy();

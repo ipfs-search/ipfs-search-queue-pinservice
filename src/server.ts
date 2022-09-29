@@ -8,7 +8,7 @@ import http from "http";
 import amqHandler from "./services/amqHandler.js";
 import { errorHandler } from "./errorHandler.js";
 
-import { PORT } from "./conf.js";
+import { PORT, QUEUE_HOST } from "./conf.js";
 
 const debug = makeDebugger("ipfs-search-enqueue-pinservice");
 
@@ -17,7 +17,7 @@ const config = {
   strict: true,
   middleware: {
     router: {
-      controllers: "./lib/controllers"
+      controllers: "./lib/controllers",
     },
     swagger: {
       disable: false,
@@ -27,22 +27,21 @@ const config = {
       // auth: {
       //   accessToken: () => { /* no-op */ },
       // }
-    }
-  }
-}
-
+    },
+  },
+};
 
 export const deploy = () => {
-  amqHandler.initialize({})
+  amqHandler.initialize({ queueHost: QUEUE_HOST });
 
-  const app = Express()
-  app.use(express.json({limit: '50mb'}));
+  const app = Express();
+  app.use(express.json({ limit: "50mb" }));
 
   initialize(app, config).then(() => {
     http.createServer(app).listen(PORT, () => {
       debug("App running at http://localhost:" + PORT);
       if (config.middleware.swagger?.disable !== true) {
-        debug('API docs (Swagger UI) available on http://localhost:' + PORT + '/docs');
+        debug("API docs (Swagger UI) available on http://localhost:" + PORT + "/docs");
       }
     });
   });
@@ -55,8 +54,6 @@ export const deploy = () => {
 };
 
 export const undeploy = () => {
-  amqHandler.close()
+  amqHandler.close();
   process.exit();
 };
-
-

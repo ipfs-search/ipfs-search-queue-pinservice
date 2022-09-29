@@ -3,15 +3,15 @@ import queueService from "./queueService.js";
 
 const debug = makeDebugger("ipfs-search-enqueue-pinservice");
 
-type QueueStatus = 'queued' | 'pinning' | 'pinned' | 'failed'
+type QueueStatus = "queued" | "pinning" | "pinned" | "failed";
 
 interface IPinResponse {
-  requestid:	string;
-  status:	QueueStatus;
-  created:	string;
-  pin:	IPin;
-  delegates:	[string, ...string[]];
-  info?:	Record<string, unknown>
+  requestid: string;
+  status: QueueStatus;
+  created: string;
+  pin: IPin;
+  delegates: [string, ...string[]];
+  info?: Record<string, unknown>;
 }
 
 interface IGetPinsResponse {
@@ -20,22 +20,24 @@ interface IGetPinsResponse {
 }
 
 export function getPins(req, res) {
-  debug (req.body);
+  debug(req.body);
   res.status(202).send({
-    message: 'This is the mockup controller for getPins'
+    message: "This is the mockup controller for getPins",
   } as IGetPinsResponse);
 }
 
-export function addPin({ body }: {body:IPin}, res) {
-  queueService.sendToQueue(body.cid)
-  res.status(202).setHeader('content-type', 'application/json').send(<IPinResponse>{
-    // TODO: proper requestid; maybe CID? Or something from rabbitMQ?
-    requestid: '',
-    status: 'queued',
-    created: new Date().toISOString(),
-    pin: body,
-    // TODO: do we need to add any delegates here?
-    delegates: [""],
-  });
+export function addPin({ body }: { body: IPin }, res) {
+  queueService.sendToQueue(body.cid);
+  res
+    .status(202)
+    .setHeader("content-type", "application/json")
+    .send(<IPinResponse>{
+      // TODO: proper requestid; maybe CID? Or something from rabbitMQ?
+      requestid: "",
+      status: "queued",
+      created: new Date().toISOString(),
+      pin: body,
+      // TODO: do we need to add any delegates here?
+      delegates: [""],
+    });
 }
-
