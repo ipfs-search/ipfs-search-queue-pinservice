@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import makeDebugger from "debug";
 import queueService from "./queueService.js";
+import { body, validationResult } from "express-validator";
 
 const debug = makeDebugger("ipfs-search-enqueue-pinservice");
 
@@ -27,8 +28,8 @@ export function getPins(req: Request, res: Response) {
   });
 }
 
-export function addPin({ body }: Request, res: Response) {
-  queueService.sendToQueue(body.cid);
+export function addPin(req: Request, res: Response) {
+  queueService.sendToQueue(req.body.cid);
   res
     .status(202)
     .setHeader("content-type", "application/json")
@@ -37,7 +38,7 @@ export function addPin({ body }: Request, res: Response) {
       requestid: "",
       status: "queued",
       created: new Date().toISOString(),
-      pin: body,
+      pin: req.body,
       // TODO: do we need to add any delegates here?
       delegates: [""],
     });
