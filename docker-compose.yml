@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  ipfs-search-queue-pinning-service:
+    build: .
+    ports:
+      - 3030:3000
+      - 127.0.0.1:5672:5672
+    environment:
+      QUEUE_HOST: amqp://0.0.0.0
+    deploy:
+      restart_policy:
+        condition: on-failure
