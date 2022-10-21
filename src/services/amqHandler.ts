@@ -1,13 +1,31 @@
-import amqplib from "amqplib";
+import * as amqplib from "amqplib";
 import { IQueueHandler } from "../types/IQueueHandler";
+import {QUEUE_HOST} from "../conf.js";
+import makeDebugger from "debug";
+const debug = makeDebugger("ipfs-search-enqueue-pinservice:amqHandler");
 
 const queue = "hashes";
-let connection: amqplib.Connection;
+let connection: amqplib.Connection = null;
 let channel: amqplib.ConfirmChannel;
 
-const initialize = async (options) => {
-  connection = await amqplib.connect(options?.queueHost || "amqp://localhost");
-  channel = await connection.createConfirmChannel();
+const initialize = async () => {
+  while(!connection) {
+    try {
+      await amqplib.connect(QUEUE_HOST).then((conn) => {
+          debug("Connected to RabbitMQ")
+          connection = conn;
+        },
+        async (error) => {
+          debug("Unable to connect to RabbitMQ; trying again", error)
+          await new Promise(resolve => setTimeout(resolve, 1000))
+        })
+      channel = await connection.createConfirmChannel();
+    }
+    catch(error){
+      debug("Error trying to connect to RabbitMQ; trying again", error)
+      await new Promise(resolve => setTimeout(resolve, 1000))
+    }
+  }
 };
 
 const close = async () => {

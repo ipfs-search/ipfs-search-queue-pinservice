@@ -8,7 +8,7 @@ import http from "http";
 import amqHandler from "./services/amqHandler.js";
 import { errorHandler } from "./errorHandler.js";
 
-import { PORT, HOST, QUEUE_HOST } from "./conf.js";
+import { PORT, HOST } from "./conf.js";
 
 const debug = makeDebugger("ipfs-search-enqueue-pinservice");
 
@@ -20,6 +20,7 @@ const config = {
       controllers: "./lib/controllers",
     },
     swagger: {
+      // TODO: env variable to disable swagger such as NODE_ENV
       disable: false,
     },
     security: {
@@ -31,8 +32,8 @@ const config = {
   },
 };
 
-export const deploy = () => {
-  amqHandler.initialize({ queueHost: QUEUE_HOST });
+export const deploy = async () => {
+  await amqHandler.initialize()
 
   const app = Express();
   app.use(express.json({ limit: "50mb" }));

@@ -5,9 +5,8 @@ services:
     build: .
     ports:
       - 3030:3000
-      - 127.0.0.1:5672:5672
-    environment:
-      QUEUE_HOST: amqp://0.0.0.0
+#    environment:
+#      AMQP_URL: amqp://0.0.0.0
     deploy:
       restart_policy:
         condition: on-failure
