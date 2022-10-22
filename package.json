@@ -16,7 +16,7 @@
     "url": "git+https://github.com/ipfs-search/ipfs-search-push.git"
   },
   "scripts": {
-    "start": "node lib/cluster.js",
+    "start": "DEBUG=* node lib/cluster.js",
     "dev": "tsc; DEBUG=* node lib/cluster.js",
     "build": "tsc",
     "test": "mocha",

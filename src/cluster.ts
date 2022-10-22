@@ -4,7 +4,7 @@ import debuggerFactory from "debug";
 
 import { deploy, undeploy } from "./server.js";
 
-import { HOST, PORT, PROCESSES } from "./conf.js";
+import { PROCESSES } from "./conf.js";
 
 const debug = debuggerFactory("ipfs-search-push:cluster");
 
