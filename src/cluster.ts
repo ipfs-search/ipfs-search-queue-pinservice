@@ -1,67 +1,47 @@
 import { exit } from "node:process";
 import cluster from "cluster";
-import debuggerFactory from "debug";
+import { log } from "./logger.js";
+import { config, deploy, undeploy } from "./server.js";
+import { HOST, PORT, PROCESSES } from "./conf.js";
 
-import { deploy, undeploy } from "./server.js";
-
-import { PROCESSES } from "./conf.js";
-
-const debug = debuggerFactory("ipfs-search-push:cluster");
-
-function forkWorkers() {
-  // Start workers and listen for messages containing notifyRequest
-  debug(`Starting ${PROCESSES} worker processes.`);
-
-  let workerCount = 0;
-  cluster.on("listening", (worker, address) => {
-    workerCount++;
-
-    debug("Started worker %d: %s", workerCount, worker);
-
-    if (workerCount == PROCESSES) {
-      console.log(
-        `${workerCount} workers started and listening on http://${address.address}:${address.port}`
-      );
+let workerCount = 0;
+cluster.on("listening", (worker) => {
+  workerCount++;
+  log(`Started worker ${worker.id} with pid ${worker.process.pid}. ${workerCount} workers are running`)
+  if(workerCount === PROCESSES) {
+    log(`App running at http://${HOST}:${PORT}`);
+    if (config.middleware.swagger?.disable !== true) {
+      log(`API docs (Swagger UI) available on http://${HOST}:${PORT}/docs`);
     }
-  });
-
-  cluster.on("exit", function (worker) {
-    console.log(`worker ${worker.process.pid} died.\nshutting down server.`);
-    exit(1);
-  });
-
-  for (let i = 0; i < PROCESSES; i++) {
-    debug(i);
-    cluster.fork();
   }
-}
-
-// async function startWorker() {
-//   const app = deploy();
-
-// app.listen(PORT, HOST, () => {
-//   debug(`Started server on http://${HOST}:${PORT}/`)
-// });
-// }
-
-// if (cluster.isPrimary) {
-//   debug('starting cluster')
-//   forkWorkers();
-// } else {
-//   debug('starting worker')
-//   startWorker();
-// }
+});
 
 // quit on ctrl-c when running docker in terminal
 process.on("SIGINT", function onSigint() {
-  debug(`[${new Date().toISOString()}] Got SIGINT (aka ctrl-c in docker). Graceful shutdown`);
+  workerCount--;
+  log(`Got SIGINT (ctrl-c). Graceful shutdown of pid ${process.pid}`);
   undeploy();
 });
 
 // quit properly on docker stop
 process.on("SIGTERM", function onSigterm() {
-  debug(`[${new Date().toISOString()}] Got SIGTERM (docker container stop). Graceful shutdown`);
+  workerCount--;
+  log(`Got SIGTERM (docker container stop). Graceful shutdown of pid ${process.pid}`);
   undeploy();
 });
 
-deploy();
+cluster.on("exit", function (worker) {
+  workerCount--;
+  log(`Worker ${worker.id} with pid ${worker.process.pid} died. ${workerCount} workers are still running.`);
+  exit(1);
+  // N.b. this means that if one worker gets killed, the entire cluster is taken offline.
+});
+
+if (cluster.isPrimary) {
+  for (let i = 0; i < PROCESSES; i++) {
+    cluster.fork();
+  }
+} else {
+  deploy();
+}
+
