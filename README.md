@@ -37,6 +37,6 @@ Steps to get up and running:
 
 The API can be configured through the following environment variables:
 
-- `PORT` Port to run the service on _(default: `7070`)_
-- `HOST` Host to run the service on _(default: `localhost`)_
+- `PINSERVICE_PORT` Port to run the service on _(default: `7070`)_
+- `PINSERVICE_HOST` Host to run the service on _(default: `localhost`)_
 - `QUEUE_HOST` address of the ipfs-search queue server _(default: `amqp://localhost`)_
