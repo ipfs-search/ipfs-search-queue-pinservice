@@ -31,7 +31,7 @@ export const deploy = async () => {
   app.use(Express.json({ limit: "50mb" }));
 
   initialize(app, config).then(() => {
-    http.createServer(app).listen(PORT, HOST, () => {});
+    http.createServer(app).listen(PORT, HOST);
   });
 
   app.use(errorHandler);

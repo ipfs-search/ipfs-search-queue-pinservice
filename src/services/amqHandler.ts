@@ -1,7 +1,7 @@
 import * as amqplib from "amqplib";
 import { IQueueHandler } from "../types/IQueueHandler";
 import { QUEUE_HOST } from "../conf.js";
-import { amqLogger } from "../logger";
+import { amqLogger } from "../logger.js";
 
 const queue = "hashes";
 let connection: amqplib.Connection = null;

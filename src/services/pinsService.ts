@@ -1,22 +1,6 @@
 import { Request, Response } from "express";
 import queueService from "./queueService.js";
-import { body, validationResult } from "express-validator";
-
-type QueueStatus = "queued" | "pinning" | "pinned" | "failed";
-
-interface IPinResponse {
-  requestid: string;
-  status: QueueStatus;
-  created: string;
-  pin: IPin;
-  delegates: [string, ...string[]];
-  info?: Record<string, unknown>;
-}
-
-interface IGetPinsResponse {
-  count: number;
-  results: IPinResponse[];
-}
+import { IGetPinsResponse, IPinResponse } from "../types/pin";
 
 export function getPins(req: Request, res: Response) {
   res.status(202).send(<IGetPinsResponse>{
