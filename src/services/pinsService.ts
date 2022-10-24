@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import {CID} from "multiformats";
 import queueService from "./queueService.js";
 import { IGetPinsResponse, IPinResponse } from "../types/pin";
 

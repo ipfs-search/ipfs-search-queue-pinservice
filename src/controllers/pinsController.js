@@ -9,12 +9,14 @@ export function addPin(req, res) {
   try {
     CID.parse(req.body.cid);
     service.addPin(req, res);
-  }
-  catch (error) {
-    res.status(400).contentType('application/json').send({
-      error: {
-        reason: 'Bad CID provided in request body'
-      }
-    })
+  } catch (error) {
+    res
+      .status(400)
+      .contentType("application/json")
+      .send({
+        error: {
+          reason: "Bad CID provided in request body",
+        },
+      });
   }
 }
