@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
-import makeDebugger from "debug";
 import queueService from "./queueService.js";
 import { body, validationResult } from "express-validator";
-
-const debug = makeDebugger("ipfs-search-enqueue-pinservice");
 
 type QueueStatus = "queued" | "pinning" | "pinned" | "failed";
 
@@ -29,7 +26,8 @@ export function getPins(req: Request, res: Response) {
 }
 
 export function addPin(req: Request, res: Response) {
-  queueService.sendToQueue(req.body.cid)
+  queueService
+    .sendToQueue(req.body.cid)
     .then(() => {
       res
         .status(202)
@@ -44,14 +42,15 @@ export function addPin(req: Request, res: Response) {
           delegates: [""],
         });
     })
-    .catch((error)=> {
-      res.status(500)
+    .catch((error) => {
+      res
+        .status(500)
         .setHeader("content-type", "application/json")
         .send({
-          "error": {
-            "reason": "RabbitMQ Error",
-            "details": error
-          }
-        })
-    })
+          error: {
+            reason: "RabbitMQ Error",
+            details: error,
+          },
+        });
+    });
 }

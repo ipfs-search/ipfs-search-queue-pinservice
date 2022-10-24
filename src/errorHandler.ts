@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { logError } from './logger.js'
-import { ENVIRONMENT } from './conf.js'
+import { logError } from "./logger.js";
+import { ENVIRONMENT } from "./conf.js";
 
 class HttpException extends Error {
   status: number;
@@ -21,7 +21,7 @@ export const errorHandler = (err: HttpException, _: Request, res: Response, next
       .end();
   }
   if (res.headersSent) {
-    return next(err)
+    return next(err);
   }
   if (ENVIRONMENT === "production") {
     // Don't leak details in production

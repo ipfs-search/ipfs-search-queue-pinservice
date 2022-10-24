@@ -1,29 +1,29 @@
 import * as amqplib from "amqplib";
 import { IQueueHandler } from "../types/IQueueHandler";
-import {QUEUE_HOST} from "../conf.js";
-import makeDebugger from "debug";
-const debug = makeDebugger("ipfs-search-enqueue-pinservice:amqHandler");
+import { QUEUE_HOST } from "../conf.js";
+import { amqLogger } from "../logger";
 
 const queue = "hashes";
 let connection: amqplib.Connection = null;
 let channel: amqplib.ConfirmChannel;
 
 const initialize = async () => {
-  while(!connection) {
+  while (!connection) {
     try {
-      await amqplib.connect(QUEUE_HOST).then((conn) => {
-          debug("Connected to RabbitMQ")
+      await amqplib.connect(QUEUE_HOST).then(
+        (conn) => {
+          amqLogger("Connected to RabbitMQ");
           connection = conn;
         },
         async (error) => {
-          debug("Unable to connect to RabbitMQ; trying again", error)
-          await new Promise(resolve => setTimeout(resolve, 1000))
-        })
+          amqLogger("Unable to connect to RabbitMQ; trying again", error);
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+      );
       channel = await connection.createConfirmChannel();
-    }
-    catch(error){
-      debug("Error trying to connect to RabbitMQ; trying again", error)
-      await new Promise(resolve => setTimeout(resolve, 1000))
+    } catch (error) {
+      amqLogger("Error trying to connect to RabbitMQ; trying again", error);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 };
@@ -43,8 +43,8 @@ const sendToQueue = (CID: string) => {
 
   channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), options);
   return new Promise((resolve, reject) => {
-    channel.waitForConfirms().then(resolve).catch(reject)
-  })
+    channel.waitForConfirms().then(resolve).catch(reject);
+  });
 };
 
 export default <IQueueHandler>{

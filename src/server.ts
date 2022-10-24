@@ -16,7 +16,7 @@ export const config = {
       controllers: "./lib/controllers",
     },
     swagger: {
-      disable: ENVIRONMENT === 'production',
+      disable: ENVIRONMENT === "production",
     },
     security: {
       disable: true,
@@ -25,14 +25,13 @@ export const config = {
 };
 
 export const deploy = async () => {
-  await amqHandler.initialize()
+  await amqHandler.initialize();
 
   const app = Express();
   app.use(Express.json({ limit: "50mb" }));
 
   initialize(app, config).then(() => {
-    http.createServer(app).listen(PORT, HOST, () => {
-    });
+    http.createServer(app).listen(PORT, HOST, () => {});
   });
 
   app.use(errorHandler);

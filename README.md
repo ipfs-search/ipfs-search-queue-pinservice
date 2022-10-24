@@ -6,7 +6,7 @@ Microservice implementing the IPFS pin service API to automatically push IPFS up
 
 https://github.com/ipfs-search/ipfs-search
 
-Have a crawler and the Rabbit MQ server running somewhere. 
+Have a crawler and the Rabbit MQ server running somewhere.
 
 Docker to build/start or node 16+ to run locally
 
@@ -23,15 +23,15 @@ When running locally, you can test this as follows:
 
 Steps to get up and running:
 
-* clone https://github.com/ipfs-search/ipfs-search
-* start ipfs-search in a terminal using `docker compose up ipfs-crawler` (or use `docker-compose`, depending on your system)
-* start the queue-pinning-service in another terminal using `npm run start`
-* navigate with the browser to http://localhost:7070/docs/#/pins/addPin
-* Select "Try it out" under POST /pins
-* modify the request body as you like; typically you want to put at least a valid CID
-* click **Execute** (the big blue button)
-* check below if you get a `202` Succesful response
-* If you get a `202` response, verify in the ipfs-search terminal that the request came through
+- clone https://github.com/ipfs-search/ipfs-search
+- start ipfs-search in a terminal using `docker compose up ipfs-crawler` (or use `docker-compose`, depending on your system)
+- start the queue-pinning-service in another terminal using `npm run start`
+- navigate with the browser to http://localhost:7070/docs/#/pins/addPin
+- Select "Try it out" under POST /pins
+- modify the request body as you like; typically you want to put at least a valid CID
+- click **Execute** (the big blue button)
+- check below if you get a `202` Succesful response
+- If you get a `202` response, verify in the ipfs-search terminal that the request came through
 
 ## ENV Configuration
 

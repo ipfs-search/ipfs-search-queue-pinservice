@@ -7,8 +7,10 @@ import { HOST, PORT, PROCESSES } from "./conf.js";
 let workerCount = 0;
 cluster.on("listening", (worker) => {
   workerCount++;
-  log(`Started worker ${worker.id} with pid ${worker.process.pid}. ${workerCount} workers are running`)
-  if(workerCount === PROCESSES) {
+  log(
+    `Started worker ${worker.id} with pid ${worker.process.pid}. ${workerCount} workers are running`
+  );
+  if (workerCount === PROCESSES) {
     log(`App running at http://${HOST}:${PORT}`);
     if (config.middleware.swagger?.disable !== true) {
       log(`API docs (Swagger UI) available on http://${HOST}:${PORT}/docs`);
@@ -32,7 +34,9 @@ process.on("SIGTERM", function onSigterm() {
 
 cluster.on("exit", function (worker) {
   workerCount--;
-  log(`Worker ${worker.id} with pid ${worker.process.pid} died. ${workerCount} workers are still running.`);
+  log(
+    `Worker ${worker.id} with pid ${worker.process.pid} died. ${workerCount} workers are still running.`
+  );
   exit(1);
   // N.b. this means that if one worker gets killed, the entire cluster is taken offline.
 });
@@ -44,4 +48,3 @@ if (cluster.isPrimary) {
 } else {
   deploy();
 }
-
