@@ -21,6 +21,9 @@ export const config = {
     security: {
       disable: true,
     },
+    validator: {
+      strict: true,
+    },
   },
 };
 

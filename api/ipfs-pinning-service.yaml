@@ -9,7 +9,7 @@ info:
     url: https://github.com/ipfs/pinning-services-api-spec
   description: |
     This implementation of the IPFS Pinning Service API serves to allow pushing CIDs onto the ipfs-search-crawler queue.
-    Only `POST /pins` has a functional implementation, the other calls are stubs and will always return succesful.
+    Only `POST /pins` has a functional implementation, the other calls are stubs and will always return succesful if they follow this spec.
     For explanation of the spec, see [ipfs.github.io/pinning-services-api-spec/](https://ipfs.github.io/pinning-services-api-spec/)
 
 servers:
