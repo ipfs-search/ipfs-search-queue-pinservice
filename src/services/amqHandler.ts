@@ -16,16 +16,16 @@ const initialize = async () => {
           connection = conn;
         },
         async (error) => {
-          amqLogger("Unable to connect to RabbitMQ; trying again", error);
+          amqLogger(error.code, "Unable to connect to RabbitMQ; trying again");
           await new Promise((resolve) => setTimeout(resolve, 1000));
         }
       );
-      channel = await connection.createConfirmChannel();
     } catch (error) {
-      amqLogger("Error trying to connect to RabbitMQ; trying again", error);
+      amqLogger(error.code, "Error trying to connect to RabbitMQ; trying again");
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
+  channel = await connection.createConfirmChannel();
 };
 
 const close = async () => {

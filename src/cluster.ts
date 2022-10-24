@@ -7,6 +7,7 @@ import { HOST, PORT, PROCESSES } from "./conf.js";
 let workerCount = 0;
 cluster.on("listening", (worker) => {
   workerCount++;
+  // N.b. It could be a good idea to namespace the debug loggers with the id of the worker
   log(
     `Started worker ${worker.id} with pid ${worker.process.pid}. ${workerCount} workers are running`
   );

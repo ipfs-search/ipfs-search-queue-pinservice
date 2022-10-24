@@ -22,6 +22,7 @@ EXPOSE 7070
 USER node
 ENV PINSERVICE_PORT=7070
 ENV PINSERVICE_HOST=0.0.0.0
+ENV NODE_ENV=production
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:7070/healthcheck || exit 1
