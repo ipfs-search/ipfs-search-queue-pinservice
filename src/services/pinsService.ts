@@ -3,10 +3,13 @@ import queueService from "./queueService.js";
 import { IGetPinsResponse, IPinResponse } from "../types/pin";
 
 export function getPins(req: Request, res: Response) {
-  res.status(202).send(<IGetPinsResponse>{
-    count: 0,
-    results: [],
-  });
+  res
+    .status(200)
+    .setHeader("content-type", "application/json")
+    .send(<IGetPinsResponse>{
+      count: 0,
+      results: [],
+    });
 }
 
 export function addPin(req: Request, res: Response) {
@@ -22,7 +25,7 @@ export function addPin(req: Request, res: Response) {
           status: "queued",
           created: new Date().toISOString(),
           pin: req.body,
-          // TODO: do we need to add any delegates here?
+          // TODO: What should be the delegate?
           delegates: [""],
         });
     })

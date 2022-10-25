@@ -12,7 +12,7 @@ export interface IPinResponse {
   status: QueueStatus;
   created: string;
   pin: IPin;
-  delegates: [string, ...string[]];
+  delegates: [...string[]];
   info?: Record<string, unknown>;
 }
 
