@@ -39,7 +39,8 @@ const sendToQueue = (CID: string) => {
     mandatory: true,
     contentType: "application/json",
   };
-  const payload = { Protocol: 1, ID: CID, Source: 5 };
+  // Source 4 = usersource (see https://github.com/ipfs-search/ipfs-search/blob/master/types/sourcetype.go#L29)
+  const payload = { Protocol: 1, ID: CID, Source: 4 };
 
   channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), options);
   return new Promise((resolve, reject) => {
