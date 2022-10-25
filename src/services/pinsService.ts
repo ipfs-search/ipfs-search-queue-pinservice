@@ -2,6 +2,7 @@ import { createHash } from 'crypto'
 import { Request, Response } from "express";
 import queueService from "./queueService.js";
 import { IPinResults, IPinStatus } from "../types/pin";
+import { DELEGATES } from "../conf.js";
 
 export function getPins(req: Request, res: Response) {
   res
@@ -27,7 +28,7 @@ export function addPin(req: Request, res: Response) {
           created: new Date().toISOString(),
           pin: req.body,
           // TODO: What should be the delegate?
-          delegates: [""],
+          delegates: DELEGATES,
         });
     })
     .catch((error) => {

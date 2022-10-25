@@ -1,9 +1,12 @@
+
 // TODO: proper mocks here
+import { IPinStatus } from "../types/pin";
+
 export function funcpinsrequestid(req, res) {
   res
     .status(200)
     .setHeader("content-type", "application/json")
-    .send({
+    .send(<IPinStatus>{
   });
 }
 
