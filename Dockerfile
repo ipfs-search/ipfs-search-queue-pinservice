@@ -1,28 +1,38 @@
-FROM node:16-buster-slim AS build
+FROM node:16-alpine AS build
 
-RUN apt-get update && apt-get -y dist-upgrade
-RUN apt-get install -y build-essential python3
+WORKDIR /usr/src/app
+COPY package*.json ./
 
-WORKDIR /src
-COPY ./package* ./
+# Install (all) dependencies
+RUN npm ci
 
-RUN npm ci --only=production
+# Copy source, run build
+COPY tsconfig*.json ./
+COPY src ./src/
 
-# This results in a single layer image
-FROM node:16-buster-slim
+RUN npm run build
 
-RUN apt-get update && apt-get -y dist-upgrade
-RUN apt-get install -y curl
+# Run image, without dev deps
+FROM node:16-alpine
+ENV NODE_ENV=production
 
-WORKDIR /src
-COPY --from=build /src .
-COPY . .
+WORKDIR /usr/src/app
+RUN chown node:node .
+USER node
+
+# Install production deps
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+# Copy API spec
+COPY api ./api/
+
+# Copy compiled typescript
+COPY --from=build /usr/src/app/lib ./lib/
 
 EXPOSE 7070
-USER node
-ENV PINSERVICE_PORT=7070
+
 ENV PINSERVICE_HOST=0.0.0.0
-ENV NODE_ENV=production
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:7070/healthcheck || exit 1
