@@ -24,6 +24,9 @@ USER node
 COPY package*.json ./
 RUN npm ci --omit=dev
 
+# Copy API spec
+COPY api ./api/
+
 # Copy compiled typescript
 COPY --from=build /usr/src/app/lib ./lib/
 
