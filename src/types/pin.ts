@@ -1,4 +1,4 @@
-interface IPin {
+export interface IPin {
   cid: string;
   name: string;
   origins: string[];

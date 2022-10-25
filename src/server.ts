@@ -18,6 +18,8 @@ export const config = {
     swagger: {
       disable: ENVIRONMENT === "production",
     },
+    //https://oas-tools.github.io/docs/features/security
+    // for now we will run it without authentication.
     security: {
       disable: true,
     },
