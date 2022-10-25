@@ -7,4 +7,7 @@ export const HOST = env.PINSERVICE_HOST || "localhost";
 export const PORT = parseInt(env.PINSERVICE_PORT || "7070");
 export const QUEUE_HOST = env.AMQP_URL || "amqp://guest:guest@localhost:5672";
 export const LOG_NAMESPACE = "queue-pinservice";
-export const DELEGATES = [""]
+// set delegates of your ipfs node(s) e.g. using PINSERVICE_DELEGATES=ipfs id | jq -r -c '.Addresses'
+// note that when not providing any delegates, the service will still work, but the client can give
+// an error about the request
+export const DELEGATES = env.PINSERVICE_DELEGATES?.split(",") || [""];

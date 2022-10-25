@@ -6,8 +6,9 @@ export function funcpinsrequestid(req, res) {
     .send({
       error: {
         reason: "Not implemented for ipfs-search.com queue-pinservice",
-        details: "This pinning service implementation can only use POST /pins/ to push pins to the search queue",
-      }
+        details:
+          "This pinning service implementation can only use POST /pins/ to push pins to the search queue",
+      },
     });
 }
 
@@ -18,8 +19,9 @@ export function getPinByRequestId(req, res) {
     .send({
       error: {
         reason: "GET /pins/{requestid} Not implemented for ipfs-search.com queue-pinservice",
-        details: "This pinning service implementation can only use POST /pins/ to push pins to the search queue",
-      }
+        details:
+          "This pinning service implementation can only use POST /pins/ to push pins to the search queue",
+      },
     });
 }
 
@@ -29,8 +31,8 @@ export function replacePinByRequestId(req, res) {
     .setHeader("content-type", "application/json")
     .send({
       error: {
-        reason: "Unused function"
-      }
+        reason: "Unused function",
+      },
     });
 }
 
@@ -41,7 +43,8 @@ export function deletePinByRequestId(req, res) {
     .send({
       error: {
         reason: "DELETE /pins/{requestid} Not implemented for ipfs-search.com queue-pinservice",
-        details: "This pinning service implementation can only use POST /pins/ to push pins to the search queue",
-      }
+        details:
+          "This pinning service implementation can only use POST /pins/ to push pins to the search queue",
+      },
     });
 }

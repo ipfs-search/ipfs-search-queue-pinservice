@@ -1,5 +1,5 @@
 import * as service from "../services/pinsrequestidService.js";
-import { addPin} from "./pinsController.js";
+import { addPin } from "./pinsController.js";
 
 export function funcpinsrequestid(req, res) {
   service.funcpinsrequestid(req, res);
