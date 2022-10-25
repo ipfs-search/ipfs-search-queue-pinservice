@@ -8,9 +8,8 @@ export function getPins(req, res) {
 export function addPin(req, res) {
   try {
     CID.parse(req.body.cid);
-    service.addPin(req, res);
   } catch (error) {
-    res
+    return res
       .status(400)
       .contentType("application/json")
       .send({
@@ -19,4 +18,5 @@ export function addPin(req, res) {
         },
       });
   }
+  service.addPin(req, res)
 }

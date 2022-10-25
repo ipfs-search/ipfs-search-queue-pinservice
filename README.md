@@ -10,6 +10,8 @@ Have a crawler and the Rabbit MQ server running somewhere.
 
 Docker to build/start or node 16+ to run locally
 
+One or more ipfs nodes.
+
 ## Usage
 
 The microservice follows the IPFS pinservice API spec:
