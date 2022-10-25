@@ -1,6 +1,9 @@
 // TODO: proper mocks here
 export function funcpinsrequestid(req, res) {
-  res.send({
+  res
+    .status(200)
+    .setHeader("content-type", "application/json")
+    .send({
   });
 }
 

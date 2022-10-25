@@ -1,13 +1,13 @@
 import { createHash } from 'crypto'
 import { Request, Response } from "express";
 import queueService from "./queueService.js";
-import { IGetPinsResponse, IPinResponse } from "../types/pin";
+import { IPinResults, IPinStatus } from "../types/pin";
 
 export function getPins(req: Request, res: Response) {
   res
     .status(200)
     .setHeader("content-type", "application/json")
-    .send(<IGetPinsResponse>{
+    .send(<IPinResults>{
       count: 0,
       results: [],
     });
@@ -20,7 +20,7 @@ export function addPin(req: Request, res: Response) {
       res
         .status(202)
         .setHeader("content-type", "application/json")
-        .send(<IPinResponse>{
+        .send(<IPinStatus>{
           // needs a unique identifier, so hash the cid+timestamp
           requestid: createHash('sha256').update(`${req.body.cid}${Date.now()}`).digest('hex'),
           status: "queued",

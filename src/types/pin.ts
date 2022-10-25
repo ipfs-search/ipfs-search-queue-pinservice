@@ -7,16 +7,16 @@ interface IPin {
 
 type QueueStatus = "queued" | "pinning" | "pinned" | "failed";
 
-export interface IPinResponse {
+export interface IPinStatus {
   requestid: string;
   status: QueueStatus;
   created: string;
   pin: IPin;
-  delegates: [...string[]];
+  delegates: [string, ...string[]];
   info?: Record<string, unknown>;
 }
 
-export interface IGetPinsResponse {
+export interface IPinResults {
   count: number;
-  results: IPinResponse[];
+  results: IPinStatus[];
 }
