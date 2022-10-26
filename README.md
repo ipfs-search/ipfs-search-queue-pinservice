@@ -4,6 +4,8 @@ Microservice implementing the [IPFS pin service API](https://ipfs.github.io/pinn
 
 ## Getting started
 
+### Dependencies:
+
 Typically, you would need at least an ipfs-search rabbitMQ server running, and an ipfs daemon. You probably also want an ipfs-search crawler associated with the rabbitMQ server.
 
 You can start a local ipfs daemon using `ipfs daemon` (See https://docs.ipfs.tech/install/command-line/#which-node-should-you-use-with-the-command-line)
@@ -16,13 +18,7 @@ For detailed instructions, see https://ipfs-search.readthedocs.io/en/latest/guid
 
 N.b. In case of errors, you may need to run `curl -X PUT "localhost:9200/ipfs_invalids;localhost:9200/ipfs_files;localhost:9200/ipfs_partials;localhost:9200/ipfs_directories`
 
-You can also run the queue-pinservice using docker-compose from the ipfs-search directory. 
-```
-docker compose up pinservice
-```
-For this to work, it is necessary to have both projects cloned in the same parent directory and the pinservice directory needs to have the default git-clone name.
-
-### building and running a local instance
+### Building and running a local instance 
 ```
 npm install
 npm run build
@@ -33,8 +29,15 @@ N.b. This assumes you have a local ipfs daemon running. You can also supply othe
 
 N.b. In stead of `npm run build; npm start` you can use `npm run dev`
 
+### Using docker-compose
+You can also run the queue-pinservice using docker-compose from the ipfs-search directory.
+```
+docker compose up pinservice
+```
+For this to work, it is necessary to have both projects cloned in the same parent directory and the pinservice directory needs to have the default git-clone name.
 
-### Configuration
+
+## Configuration
 
 The API can be configured through the following environment variables:
 
