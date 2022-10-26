@@ -1,7 +1,7 @@
 import { createHash } from "crypto";
 import { Request, Response } from "express";
 import queueService from "./queueService.js";
-import { IPinResults, IPinStatus } from "../types/pin";
+import { IErrorResponse, IPinResults, IPinStatus } from "../types/pin";
 import { DELEGATES } from "../conf.js";
 
 export function getPins(req: Request, res: Response) {
@@ -30,14 +30,14 @@ export function addPin(req: Request, res: Response) {
           delegates: DELEGATES,
         });
     })
-    .catch((error) => {
+    .catch((error: unknown) => {
       res
         .status(500)
         .setHeader("content-type", "application/json")
-        .send({
+        .send(<IErrorResponse>{
           error: {
             reason: "RabbitMQ Error",
-            details: error,
+            details: error.toString(),
           },
         });
     });

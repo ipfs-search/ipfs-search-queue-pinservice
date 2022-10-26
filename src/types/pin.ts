@@ -20,3 +20,10 @@ export interface IPinResults {
   count: number;
   results: IPinStatus[];
 }
+
+export interface IErrorResponse {
+  error: {
+    details?: string,
+    reason: string,
+  }
+}

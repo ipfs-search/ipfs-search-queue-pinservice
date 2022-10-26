@@ -1,7 +1,11 @@
 import { env } from "node:process";
 
 export const ENVIRONMENT = env.NODE_ENV || "development";
+<<<<<<< HEAD
 export const PROCESSES = parseInt(env.PROCESSES) || 1;
+=======
+export const PROCESSES = parseInt(env.PROCESSES || '') || cpus().length;
+>>>>>>> enforce string type for error details on addPin
 export const HOST = env.PINSERVICE_HOST || "localhost";
 export const PORT = parseInt(env.PINSERVICE_PORT || "7070");
 export const QUEUE_HOST = env.AMQP_URL || "amqp://guest:guest@localhost:5672";
