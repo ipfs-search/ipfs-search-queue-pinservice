@@ -29,7 +29,9 @@ npm run build
 PINSERVICE_DELEGATES=`ipfs id | jq -r -c '.Addresses'` npm start
 ```
 
-In stead of `npm run build; npm start` you can use `npm run dev`
+N.b. This assumes you have a local ipfs daemon running. You can also supply other delegates. The service will work without delegates but your client may report an error when pushing CIDs.
+
+N.b. In stead of `npm run build; npm start` you can use `npm run dev`
 
 
 ### Configuration
