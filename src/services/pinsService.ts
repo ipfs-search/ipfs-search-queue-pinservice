@@ -30,7 +30,7 @@ export function addPin(req: Request, res: Response) {
             pin: req.body,
             delegates: DELEGATES,
           });
-      } catch (error: unknown) {
+      } catch (error: any) {
         // Note that this code should never be reached, if the response is formatted well
         res
           .status(500)
@@ -43,7 +43,7 @@ export function addPin(req: Request, res: Response) {
           });
       }
     })
-    .catch((error: unknown) => {
+    .catch((error: any) => {
       res
         .status(500)
         .setHeader("content-type", "application/json")

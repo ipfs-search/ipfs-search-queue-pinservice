@@ -12,16 +12,19 @@ export const QUEUE_HOST = env.AMQP_URL || "amqp://guest:guest@localhost:5672";
 // an error about the request
 // Allowed formats for PINSERVICE_DELEGATES:
 // string, comma-separated string, JSON array
-let delegates;
+let delegates: string[] = [""];
+
 try {
-  delegates = JSON.parse(env.PINSERVICE_DELEGATES);
+  delegates = JSON.parse(env.PINSERVICE_DELEGATES || "");
   if (!Array.isArray(delegates)) throw new Error();
 } catch (e) {
-  delegates = env.PINSERVICE_DELEGATES?.split(",");
+  if (env.PINSERVICE_DELEGATES) {
+    delegates = env.PINSERVICE_DELEGATES?.split(",");
+  }
 }
 
 if (delegates?.length > 20) {
   log("Bad value for PINSERVICE_DELEGATES env variable; maximum 20 values allowed");
-  exit(1)
+  exit(1);
 }
 export const DELEGATES = delegates || [""];
