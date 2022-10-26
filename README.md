@@ -5,7 +5,7 @@
 [![Backers on Open Collective](https://opencollective.com/ipfs-search/backers/badge.svg)](#backers)
 [![Sponsors on Open Collective](https://opencollective.com/ipfs-search/sponsors/badge.svg)](#sponsors)
 
-Microservice implementing the [IPFS pin service API](https://ipfs.github.io/pinning-services-api-spec/) to push IPFS updates onto the [ipfs-search.com](https://ipfs-search.com) crawler queue.
+Microservice implementing the [IPFS pin service API](https://ipfs.github.io/pinning-services-api-spec/) to push IPFS updates onto [ipfs-search search'](https://github.com/ipfs-search/ipfs-search) crawler queue.
 
 ## Getting started
 
