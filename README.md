@@ -1,6 +1,6 @@
 # ipfs-search-queue-pinservice
 
-Microservice implementing the [IPFS pin service API](https://ipfs.github.io/pinning-services-api-spec/) to automatically push IPFS updates onto the [ipfs-search.com](https://ipfs-search.com) crawler queue.
+Microservice implementing the [IPFS pin service API](https://ipfs.github.io/pinning-services-api-spec/) to push IPFS updates onto the [ipfs-search.com](https://ipfs-search.com) crawler queue.
 
 ## Getting started
 
