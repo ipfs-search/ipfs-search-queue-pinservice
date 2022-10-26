@@ -18,17 +18,31 @@ export function addPin(req: Request, res: Response) {
   queueService
     .sendToQueue(req.body.cid)
     .then(() => {
-      res
-        .status(202)
-        .setHeader("content-type", "application/json")
-        .send(<IPinStatus>{
-          // needs a unique identifier, so hash the cid+timestamp
-          requestid: createHash("sha256").update(`${req.body.cid}${Date.now()}`).digest("hex"),
-          status: "queued",
-          created: new Date().toISOString(),
-          pin: req.body,
-          delegates: DELEGATES,
-        });
+      try{
+        res
+          .status(202)
+          .setHeader("content-type", "application/json")
+          .send(<IPinStatus>{
+            // needs a unique identifier, so hash the cid+timestamp
+            requestid: createHash("sha256").update(`${req.body.cid}${Date.now()}`).digest("hex"),
+            status: "queued",
+            created: new Date().toISOString(),
+            pin: req.body,
+            delegates: DELEGATES,
+          })
+      }
+      catch(error: unknown) {
+        // Note that this code should never be reached, if the response is formatted well
+        res
+          .status(500)
+          .setHeader("content-type", "application/json")
+          .send(<IErrorResponse>{
+            error: {
+              reason: "Validation error",
+              details: error.toString(),
+            },
+          });
+      }
     })
     .catch((error: unknown) => {
       res
