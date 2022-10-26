@@ -18,8 +18,8 @@ const initialize = async () => {
         (conn) => {
           amqLogger("Connected to RabbitMQ");
           connection = conn;
-          connection.on('error', resetConnection);
-          connection.on('close', resetConnection);
+          connection.on("error", resetConnection);
+          connection.on("close", resetConnection);
         },
         async (error) => {
           amqLogger(error.code, "Unable to connect to RabbitMQ; trying again");
@@ -34,18 +34,17 @@ const initialize = async () => {
   channel = await connection.createConfirmChannel();
 };
 
-const resetConnection = async ()=>{
-  amqLogger('Connection error; resetting connection to RabbitMQ')
+const resetConnection = async () => {
+  amqLogger("Connection error; resetting connection to RabbitMQ");
   connection = null;
   channel = null;
   await initialize();
-}
+};
 
 const close = async () => {
   await channel.close();
   await connection.close();
 };
-
 
 const sendToQueue = (CID: string) => {
   const options = {
@@ -58,9 +57,8 @@ const sendToQueue = (CID: string) => {
 
   try {
     channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), options);
-  }
-  catch (error) {
-    return Promise.reject(error.toString())
+  } catch (error) {
+    return Promise.reject(error.toString());
   }
   return new Promise((resolve, reject) => {
     channel.waitForConfirms().then(resolve).catch(reject);

@@ -14,10 +14,9 @@ export const LOG_NAMESPACE = "queue-pinservice";
 // string, comma-separated string, JSON array
 let delegates;
 try {
-  delegates = JSON.parse(env.PINSERVICE_DELEGATES)
-  if(!Array.isArray(delegates)) throw new Error()
-}
-catch (e) {
+  delegates = JSON.parse(env.PINSERVICE_DELEGATES);
+  if (!Array.isArray(delegates)) throw new Error();
+} catch (e) {
   delegates = env.PINSERVICE_DELEGATES?.split(",");
 }
 export const DELEGATES = delegates || [""];

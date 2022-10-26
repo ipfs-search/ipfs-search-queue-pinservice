@@ -18,5 +18,5 @@ export function addPin(req, res) {
         },
       });
   }
-  service.addPin(req, res)
+  service.addPin(req, res);
 }
