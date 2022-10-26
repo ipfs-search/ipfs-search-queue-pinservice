@@ -4,7 +4,23 @@ Microservice implementing the [IPFS pin service API](https://ipfs.github.io/pinn
 
 ## Getting started
 
-Typically, you would need an ipfs-search rabbitMQ server running, and an ipfs daemon.
+Typically, you would need at least an ipfs-search rabbitMQ server running, and an ipfs daemon. You probably also want an ipfs-search crawler associated with the rabbitMQ server.
+
+You can start a local ipfs daemon using `ipfs daemon` (See https://docs.ipfs.tech/install/command-line/#which-node-should-you-use-with-the-command-line)
+
+You can run rabbitMQ and the ipfs-search crawler by cloning https://github.com/ipfs-search/ipfs-search and running:
+```
+docker compose up ipfs-crawler
+```
+For detailed instructions, see https://ipfs-search.readthedocs.io/en/latest/guides.html
+
+N.b. In case of errors, you may need to run `curl -X PUT "localhost:9200/ipfs_invalids;localhost:9200/ipfs_files;localhost:9200/ipfs_partials;localhost:9200/ipfs_directories`
+
+You can also run the queue-pinservice using docker-compose from the ipfs-search directory. 
+```
+docker compose up pinservice
+```
+For this to work, it is necessary to have both projects cloned in the same parent directory and the pinservice directory needs to have the default git-clone name.
 
 ### building and running a local instance
 ```
@@ -15,9 +31,6 @@ PINSERVICE_DELEGATES=`ipfs id | jq -r -c '.Addresses'` npm start
 
 In stead of `npm run build; npm start` you can use `npm run dev`
 
-### using docker
-
-...
 
 ### Configuration
 
@@ -29,45 +42,48 @@ The API can be configured through the following environment variables:
   - If no delegates are provided, the pinservice will still work, but the client may throw an error for getting a malformed response
 - `PINSERVICE_PORT` Port to run the service on _(default: `7070`)_
 - `PINSERVICE_HOST` Host to run the service on _(default: `localhost`)_
-- `AMQP_URL` address of the ipfs-search queue server _(default: `amqp://localhost`)_
+- `AMQP_URL` address of the ipfs-search queue server _(default: `amqp://guest:guest@localhost:5672`)_
 - `NODE_ENV` turns off swagger UI when set to `production` _(default: `development`)_
 - `PROCESSES` amount of sibling workers in cluster; defaults to number of CPUs in system
 
-## Dependencies
-
-https://github.com/ipfs-search/ipfs-search
-
-Have a crawler and the Rabbit MQ server running somewhere.
-
-Docker to build/start or node 16+ to run locally
-
-One or more ipfs nodes.
-
 ## Usage
+
+### Authentication
+Note that (for now), authentication has been disabled, because there is no persistent data storage. 
+Nonetheless, the ipfs client expects an authentication key and won't work without one. You can use anything, but not nothing.
+
+### Using a local pinning service
+Setting up the ipfs client for local queue pinning service with default settings:
+```
+ipfs pin remote service add queue-pinservice http://localhost:7070 anythingWorksHere
+```
+
+Sending a CID to this queue pinning service:
+```
+ipfs pin remote add --service=queue-pinservice --name=war-and-peace.txt bafybeib32tuqzs2wrc52rdt56cz73sqe3qu2deqdudssspnu4gbezmhig4
+```
+If you have access to crawler logs you should see a message there with your CID.
+
+**N.b.** Because the ipfs client immediately after **Add pin** checks for the status of the request using **Get pin object**, this gives a not-implemented-error (code `456`). 
+This does not mean the call did not come through! There is simply no persistent data to retrieve about the call, and no way to reconstruct this information (at least for now).
+
+Generic documentation for using pinning services: https://docs.ipfs.tech/how-to/work-with-pinning-services/
 
 ## Pinning service API spec implementation
 
 Only [Add Pin](https://ipfs.github.io/pinning-services-api-spec/#operation/addPin) has been implemented. [Replace pin object](bafybeib32tuqzs2wrc52rdt56cz73sqe3qu2deqdudssspnu4gbezmhig4) is routed to the **Add pin** service.
 
 **List pin objects** returns an empty object.
-Other calls throw a not-implemented error. 
 
-N.b. Because the ipfs client immediately after **Add pin** checks for the status of the request using **Get pin object**, this gives an error. This does not mean the call did not come through!
+Other calls throw a not-implemented error with code `456`. 
 
+### Testing using Swagger UI
 
-## Testing
+When running with default settings, the swagger UI is revealed at `http://localhost:7070/docs`
 
-When running locally, you can test this as follows:
-
-Steps to get up and running:
-
-- clone https://github.com/ipfs-search/ipfs-search
-- start ipfs-search in a terminal using `docker compose up ipfs-crawler` (or use `docker-compose`, depending on your system)
-- start the queue-pinning-service in another terminal using `npm run start`
-- navigate with the browser to http://localhost:7070/docs/#/pins/addPin
+- http://localhost:7070/docs/#/pins/addPin
 - Select "Try it out" under POST /pins
-- modify the request body as you like; typically you want to put at least a valid CID
+- modify the request body as you like; to get a positive response, you must put a valid CID
 - click **Execute** (the big blue button)
-- check below if you get a `202` Succesful response
-- If you get a `202` response, verify in the ipfs-search terminal that the request came through
+- If you get a `202` response, you can see a message in the crawler logs with your CID, (assuming that you connected the rabbitMQ server to a crawler and you have access to its logs)
 
