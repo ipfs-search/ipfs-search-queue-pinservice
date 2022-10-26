@@ -2,7 +2,7 @@ import { exit } from "node:process";
 import cluster from "cluster";
 import { log } from "./logger.js";
 import { config, deploy, undeploy } from "./server.js";
-import { HOST, PORT, PROCESSES } from "./conf.js";
+import { HOST, PORT, PROCESSES, DELEGATES } from "./conf.js";
 
 let workerCount = 0;
 cluster.on("listening", (worker) => {
@@ -12,7 +12,9 @@ cluster.on("listening", (worker) => {
     `Started worker ${worker.id} with pid ${worker.process.pid}. ${workerCount} workers are running`
   );
   if (workerCount === PROCESSES) {
-    log(`App running at http://${HOST}:${PORT}`);
+    log(`Pinservice running at http://${HOST}:${PORT}`);
+    log(`Delegates: ${DELEGATES}`);
+
     if (config.middleware.swagger?.disable !== true) {
       log(`API docs (Swagger UI) available on http://${HOST}:${PORT}/docs`);
     }

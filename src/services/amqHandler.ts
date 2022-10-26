@@ -16,7 +16,7 @@ const initialize = async () => {
     try {
       await amqplib.connect(QUEUE_HOST).then(
         (conn) => {
-          amqLogger("Connected to RabbitMQ");
+          amqLogger(`Connected to RabbitMQ at ${QUEUE_HOST}`);
           connection = conn;
           connection.on("error", resetConnection);
           connection.on("close", resetConnection);
