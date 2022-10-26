@@ -4,8 +4,8 @@ import { QUEUE_HOST } from "../conf.js";
 import { amqLogger } from "../logger.js";
 
 const queue = "hashes";
-let connection: amqplib.Connection = null;
-let channel: amqplib.ConfirmChannel;
+let connection: amqplib.Connection | null;
+let channel: amqplib.ConfirmChannel | null;
 
 /**
  * Set up a RabbitMQ connection. If the connection is unavailable, keep trying
@@ -22,12 +22,12 @@ const initialize = async () => {
           connection.on("close", resetConnection);
         },
         async (error) => {
-          amqLogger(error.code, "Unable to connect to RabbitMQ; trying again");
+          amqLogger(`${error?.code} Unable to connect to RabbitMQ; trying again`);
           await new Promise((resolve) => setTimeout(resolve, 5000));
         }
       );
-    } catch (error) {
-      amqLogger(error.code, "Error trying to connect to RabbitMQ; trying again");
+    } catch (error: any) {
+      amqLogger(`${error?.code} Error trying to connect to RabbitMQ; trying again`);
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
@@ -42,8 +42,8 @@ const resetConnection = async () => {
 };
 
 const close = async () => {
-  await channel.close();
-  await connection.close();
+  await channel?.close();
+  await connection?.close();
 };
 
 const sendToQueue = (CID: string) => {
@@ -57,12 +57,12 @@ const sendToQueue = (CID: string) => {
   const payload = { Protocol: 1, ID: CID, Source: 4 };
 
   try {
-    channel.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), options);
-  } catch (error) {
+    channel?.sendToQueue(queue, Buffer.from(JSON.stringify(payload)), options);
+  } catch (error: any) {
     return Promise.reject(error.toString());
   }
   return new Promise((resolve, reject) => {
-    channel.waitForConfirms().then(resolve).catch(reject);
+    channel?.waitForConfirms().then(resolve).catch(reject);
   });
 };
 
