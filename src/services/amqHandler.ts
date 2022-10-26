@@ -51,6 +51,7 @@ const sendToQueue = (CID: string) => {
     deliveryMode: 2,
     mandatory: true,
     contentType: "application/json",
+    priority: 9,
   };
   // Source 4 = usersource (see https://github.com/ipfs-search/ipfs-search/blob/master/types/sourcetype.go#L29)
   const payload = { Protocol: 1, ID: CID, Source: 4 };
