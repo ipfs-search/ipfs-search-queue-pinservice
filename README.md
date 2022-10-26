@@ -1,5 +1,10 @@
 # ipfs-search-queue-pinservice
 
+[![pipeline status](https://gitlab.com/ipfs-search.com/ipfs-search-queue-pinservice/badges/main/pipeline.svg)](https://gitlab.com/ipfs-search.com/ipfs-search-queue-pinservice/-/commits/main)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1ddbaa055695043c60e2/maintainability)](https://codeclimate.com/github/ipfs-search/ipfs-search-queue-pinservice/maintainability)
+[![Backers on Open Collective](https://opencollective.com/ipfs-search/backers/badge.svg)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/ipfs-search/sponsors/badge.svg)](#sponsors)
+
 Microservice implementing the [IPFS pin service API](https://ipfs.github.io/pinning-services-api-spec/) to push IPFS updates onto the [ipfs-search.com](https://ipfs-search.com) crawler queue.
 
 ## Getting started
@@ -120,3 +125,36 @@ When running with default settings, the swagger UI is revealed at `http://localh
 - modify the request body as you like; to get a positive response, you must put a valid CID
 - click **Execute** (the big blue button)
 - If you get a `202` response, you can see a message in the crawler logs with your CID, (assuming that you connected the rabbitMQ server to a crawler and you have access to its logs)
+
+## Contributors
+
+This project exists thanks to all the people who contribute.
+<a href="https://github.com/ipfs-search/ipfs-search-queue-pinservice/graphs/contributors"><img src="https://opencollective.com/ipfs-search/contributors.svg?width=890&button=false" /></a>
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/ipfs-search#backer)]
+
+<a href="https://opencollective.com/ipfs-search#backers" target="_blank"><img src="https://opencollective.com/ipfs-search/backers.svg?width=890"></a>
+
+## Sponsors
+
+<a href="https://nlnet.nl/project/IPFS-search/"><img width="200pt" src="https://nlnet.nl/logo/banner.png"></a> <a href="https://nlnet.nl/project/IPFS-search/"><img width="200pt" src="https://nlnet.nl/image/logos/NGI0_tag.png"></a>
+<br>
+ipfs-search is supported by NLNet through the EU's Next Generation Internet (NGI0) programme.
+
+<a href="https://redpencil.io/projects/"><img width="270pt" src="https://raw.githubusercontent.com/redpencilio/frontend-redpencil.io/327318b84ffb396d8af6776f19b9f36212596082/public/assets/vector/rpio-logo.svg"> </a><br>
+RedPencil is supporting the hosting of ipfs-search.com.
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/ipfs-search#sponsor)]
+
+<a href="https://opencollective.com/ipfs-search/sponsor/0/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/1/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/2/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/3/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/4/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/5/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/6/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/7/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/8/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/ipfs-search/sponsor/9/website" target="_blank"><img src="https://opencollective.com/ipfs-search/sponsor/9/avatar.svg"></a>
