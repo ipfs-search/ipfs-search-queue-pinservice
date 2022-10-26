@@ -27,7 +27,6 @@ export function addPin(req: Request, res: Response) {
           status: "queued",
           created: new Date().toISOString(),
           pin: req.body,
-          // TODO: What should be the delegate?
           delegates: DELEGATES,
         });
     })
