@@ -4,64 +4,83 @@ Microservice implementing the [IPFS pin service API](https://ipfs.github.io/pinn
 
 ## Getting started
 
-### Dependencies:
+### Dependencies
 
-Typically, you would need at least an ipfs-search rabbitMQ server running, and an ipfs daemon. You probably also want an ipfs-search crawler associated with the rabbitMQ server.
+#### Services
 
-You can start a local ipfs daemon using `ipfs daemon` (See https://docs.ipfs.tech/install/command-line/#which-node-should-you-use-with-the-command-line)
+[ipfs-search](https://github.com/ipfs-search/ipfs-search) crawler and dependencies thereof.
 
-You can run rabbitMQ and the ipfs-search crawler by cloning https://github.com/ipfs-search/ipfs-search and running:
+Easiest way to start dependencies is by running ipfs-search through `docker compose`:
+
+1. `git clone https://github.com/ipfs-search/ipfs-search`
+2. `cd ipfs-search`
+3. `docker compose up ipfs-crawler`
+
+Once you see something like this, the crawler is running:
 
 ```
-docker compose up ipfs-crawler
+ipfs-search-ipfs-crawler-1     | Starting 120 workers for files
+ipfs-search-ipfs-crawler-1     | Starting 70 workers for hashes
+ipfs-search-ipfs-crawler-1     | Starting 70 workers for directories
 ```
 
 For detailed instructions, see https://ipfs-search.readthedocs.io/en/latest/guides.html
 
-N.b. In case of errors, you may need to run `curl -X PUT "localhost:9200/ipfs_invalids;localhost:9200/ipfs_files;localhost:9200/ipfs_partials;localhost:9200/ipfs_directories`
+Note that, pending on resolution of https://github.com/ipfs-search/ipfs-search/issues/223, you might need to manually created required indexes, like such:
+`curl -X PUT "localhost:9200/ipfs_invalids;localhost:9200/ipfs_files;localhost:9200/ipfs_partials;localhost:9200/ipfs_directories`
 
-### Building and running a local instance
+#### Node dependencies
 
+Install Node dependencies through NPM:
+
+`npm install`
+
+### Starting the server
+
+#### Get delegates
+
+You will need to acquire the multiaddr of at least one IPFS node and define `PINSERVICE_DELEGATES` as a JSON list. This is the address which the client will connect to in order to speed up transfers.
+Axample: `PINSERVICE_DELEGATES=["/ip4/192.168.1.94/udp/4001/quic/p2p/12D3KooWCfksHSx489oMAH2ysfNTvVtzQLj4u5PHfrXckYNzUU4x"]`
+
+If you are using `docker compose` to start the crawler as described above, you already have one running in Docker.
+
+Assuming you have [jq](https://stedolan.github.io/jq/) installed, _from within the `ipfs-search` directory_, you can run:
+
+```sh
+ipfs-search % export PINSERVICE_DELEGATES=`docker compose exec ipfs ipfs id | jq -c .Addresses`
 ```
-npm install
-npm run build
-PINSERVICE_DELEGATES=`ipfs id | jq -r -c '.Addresses'` npm start
+
+You may check for a correct value like such:
+
+```sh
+ipfs-search % echo $PINSERVICE_DELEGATES
+["/ip4/127.0.0.1/tcp/4001/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip4/127.0.0.1/udp/4001/quic/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip4/141.43.241.161/tcp/4001/p2p/12D3KooWRc4xyoRgW3mhn6dBxkFQC64iaBgCEzoZTUTog5geNupw/p2p-circuit/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip4/142.43.241.161/udp/4001/quic/p2p/12D3KooWRc4xyoRgW3mhn6dBxkFQC64iaBgCEzoZTUTog5geNupw/p2p-circuit/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip4/154.53.33.68/tcp/4001/p2p/12D3KooWF1q1ND1DnzTQbW29tsjSYF7iy57Xa1gBM5T3QDQ2rcBe/p2p-circuit/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip4/154.53.33.68/udp/4001/quic/p2p/12D3KooWF1q1ND1DnzTQbW29tsjSYF7iy57Xa1gBM5T3QDQ2rcBe/p2p-circuit/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip4/172.18.0.11/tcp/4001/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip4/172.18.0.11/udp/4001/quic/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip6/2606:5400:202:3000::4af/tcp/4001/p2p/12D3KooWRc4xyoRgW3mhn6dBxkFQC64iaBgCEzoZTUTog5geNupw/p2p-circuit/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N","/ip6/2606:5400:202:3000::4af/udp/4001/quic/p2p/12D3KooWRc4xyoRgW3mhn6dBxkFQC64iaBgCEzoZTUTog5geNupw/p2p-circuit/p2p/12D3KooWMb1C7CBkXDcm3hKZwkxYp9wsJgALGfTZqk6BBbKUyn4N"]
 ```
 
-N.b. This assumes you have a local ipfs daemon running. You can also supply other delegates. The service will work without delegates but your client may report an error when pushing CIDs.
+**Note** you will have to use the same shell now in order to start the pin service!
 
-N.b. In stead of `npm run build; npm start` you can use `npm run dev`
+#### Starting the dev server
 
-### Using docker-compose
+With `PINSERVICE_DELEGATES` defined and RabbitMQ available on localhost (as you would when running the crawler), you can start a dev server with:
 
-You can also run the queue-pinservice using docker-compose from the ipfs-search directory.
-
-```
-docker compose up pinservice
-```
-
-For this to work, it is necessary to have both projects cloned in the same parent directory and the pinservice directory needs to have the default git-clone name.
+`npm run dev`
 
 ## Configuration
 
 The API can be configured through the following environment variables:
 
-- `PINSERVICE_DELEGATES` one or more multiaddr addresses for ipfs nodes used.
-  - Can be either a string, a number of strings chained with commas, or a JSON array
-  - When running a local node, this can be generated using `` `ipfs id | jq -r -c '.Addresses'` ``
-  - If no delegates are provided, the pinservice will still work, but the client may throw an error for getting a malformed response
+- `PINSERVICE_DELEGATES`: a JSON array of [multiaddrs](http://docs.libp2p.io.ipns.localhost:8080/concepts/addressing/) which clients of the service will connect to.
 - `PINSERVICE_PORT` Port to run the service on _(default: `7070`)_
 - `PINSERVICE_HOST` Host to run the service on _(default: `localhost`)_
 - `AMQP_URL` address of the ipfs-search queue server _(default: `amqp://guest:guest@localhost:5672`)_
 - `NODE_ENV` turns off swagger UI when set to `production` _(default: `development`)_
-- `PROCESSES` amount of sibling workers in cluster; defaults to number of CPUs in system
+- `PROCESSES` amount of sibling workers in cluster _(default: `1`)_
 
 ## Usage
 
 ### Authentication
 
-Note that (for now), authentication has been disabled, because there is no persistent data storage.
-Nonetheless, the ipfs client expects an authentication key and won't work without one. You can use anything, but not nothing.
+For now, authentication has been disabled. Nonetheless, the ipfs client expects an authentication key and won't work without one. You can use anything, but not nothing.
 
 ### Using a local pinning service
 
