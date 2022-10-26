@@ -23,7 +23,7 @@ export interface IPinResults {
 
 export interface IErrorResponse {
   error: {
-    details?: string,
-    reason: string,
-  }
+    details?: string;
+    reason: string;
+  };
 }

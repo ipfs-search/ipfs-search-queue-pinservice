@@ -18,7 +18,7 @@ export function addPin(req: Request, res: Response) {
   queueService
     .sendToQueue(req.body.cid)
     .then(() => {
-      try{
+      try {
         res
           .status(202)
           .setHeader("content-type", "application/json")
@@ -29,9 +29,8 @@ export function addPin(req: Request, res: Response) {
             created: new Date().toISOString(),
             pin: req.body,
             delegates: DELEGATES,
-          })
-      }
-      catch(error: unknown) {
+          });
+      } catch (error: unknown) {
         // Note that this code should never be reached, if the response is formatted well
         res
           .status(500)
